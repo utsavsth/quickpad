@@ -1,51 +1,105 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
-        <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src * data: gap: https://ssl.gstatic.com 'unsafe-eval'; 
+      style-src 'self' 'unsafe-inline'; 
+      media-src *; 
+      img-src 'self' data: content:;"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, width=device-width, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <script src="cordova.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.mobile-1.4.5.js"></script>
+    <script src="js/index.js"></script>
+    <title>Quickpad</title>
+  </head>
+  <body>
+    <!-- Page 1 -->
+    <div data-role="page" id="mainPage">
+      <!--start header-->
+      <div data-role="header" data-position="fixed">
+        <h1>My Notes</h1>
+        <a
+          href="#popupMenu"
+          data-rel="popup"
+          data-transition="pop"
+          class="
+            ui-btn
+            ui-btn-icon-notext
+            ui-corner-all
+            ui-icon-edit
+            ui-nodisc-icon
+            ui-alt-icon
+            ui-btn-right
+          "
+          >Settings</a
+        >
+        <div data-role="popup" id="popupMenu" data-theme="a" class="ui-content">
+          <ul data-role="listview" style="min-width: 210px">
+            <li><a href="#" id="addLocalData">Add New</a></li>
+            <li><a href="#" id="uploadCloudData">Upload to Cloud</a></li>
+          </ul>
         </div>
-        <script src="cordova.js"></script>
-        <script src="js/index.js"></script>
-    </body>
+      </div>
+      <!--end header-->
+      <div data-role="main" class="ui-content">
+        <input type="text" id="searchNotes" placeholder="Search" />
+        <div id="notes-container">
+          <ul data-role="listview" class="ui-listview"></ul>
+        </div>
+      </div>
+      <!-- end page content-->
+      <!--start footer-->
+      <div
+        class=""
+        id=""
+        data-role="footer"
+        data-position="fixed"
+        data-tap-toggle="false"
+      >
+        <h4>Running cordova-browser &copy; 6.0.0</h4>
+      </div>
+      <!--end footer-->
+    </div>
+    <!-- End page one-->
+    <!-- Start page two-->
+    <div data-role="page" id="pg-display-local">
+      <!--start header-->
+      <div data-role="header" data-position="fixed" data-add-back-btn="true">
+        <h1>My Notes</h1>
+      </div>
+      <!--end header-->
+      <div data-role="main" class="ui-content">
+        <textarea rows="10" id="editNote"></textarea>
+        <button id="btnSave" class="ui-btn ui-shadow ui-corner-all">
+          Save
+        </button>
+      </div>
+      <!--start footer-->
+      <div
+        class=""
+        id=""
+        data-role="footer"
+        data-position="fixed"
+        data-tap-toggle="false"
+      >
+        <h4>Running cordova-browser &copy; 6.0.0</h4>
+      </div>
+      <!--end footer-->
+    </div>
+    <!-- end page two-->
+  </body>
 </html>

@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const uri =
-  'mongodb+srv://admin:Nepal@123@cluster0.bnb9f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  'mongodb+srv://admin:admin@cluster0.x7lvb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -21,8 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const port = 3000;
-const database = 'cqu_assignment2';
-const docs = 'dogbase';
+const database = 'cqu_assignment3';
+const docs = 'quickpad';
 
 // Global for general use
 let currCollection;
