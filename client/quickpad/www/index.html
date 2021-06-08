@@ -6,16 +6,18 @@
 
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src * data: gap: https://ssl.gstatic.com 'unsafe-eval'; 
+      content="default-src * data: gap: https://ssl.gstatic.com ; 
       style-src 'self' 'unsafe-inline'; 
+      script-src 'self' http://172.20.10.2:8000 'unsafe-inline' 'unsafe-eval';
       media-src *; 
+      
       img-src 'self' data: content:;"
     />
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta
       name="viewport"
-      content="initial-scale=1, width=device-width, viewport-fit=cover"
+      content="initial-scale=1, user-scalable=no, maximum-scale=1, width=device-width, viewport-fit=cover"
     />
     <meta name="color-scheme" content="light dark" />
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css" />
@@ -23,6 +25,8 @@
     <script src="cordova.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script src="js/hammer.js"></script>
     <script src="js/index.js"></script>
     <title>Quickpad</title>
   </head>
@@ -76,17 +80,58 @@
     </div>
     <!-- End page one-->
     <!-- Start page two-->
-    <div data-role="page" id="pg-display-local">
+    <div data-role="page" id="pg-display-new">
       <!--start header-->
       <div data-role="header" data-position="fixed" data-add-back-btn="true">
         <h1>My Notes</h1>
       </div>
       <!--end header-->
       <div data-role="main" class="ui-content">
-        <textarea rows="10" id="editNote"></textarea>
-        <button id="btnSave" class="ui-btn ui-shadow ui-corner-all">
-          Save
-        </button>
+        <form action="#" id="note-form">
+          <textarea rows="10" id="editNote" required></textarea>
+          <button id="btnSave" class="ui-btn ui-shadow ui-corner-all">
+            Save
+          </button>
+        </form>
+        <div
+          data-role="popup"
+          id="errorMsg"
+          data-overlay-theme="a"
+          data-theme="a"
+          data-dismissible="false"
+          style="max-width: 400px"
+        >
+          <div data-role="header" data-theme="a">
+            <h3>Error Occured</h3>
+          </div>
+          <div role="main" class="ui-content">
+            <div class="ui-nodisc-icon">
+              <!-- Class added to the wrapper -->
+                  <a
+                href="#"
+                class="
+                  ui-btn
+                  ui-shadow
+                  ui-corner-all
+                  ui-icon-delete
+                  ui-btn-icon-notext
+                  ui-btn-b
+                  ui-btn-inline
+                "
+                >Delete</a
+              >
+              <p class="prompt">Note cannot be empty</p>
+            </div>
+            <a
+              href="#"
+              class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
+              data-rel="back"
+              data-transition="flow"
+              id="upload"
+              >Ok</a
+            >
+          </div>
+        </div>
       </div>
       <!--start footer-->
       <div
