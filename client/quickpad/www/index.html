@@ -1,150 +1,126 @@
 <!DOCTYPE html>
-
 <html>
   <head>
     <meta charset="utf-8" />
-
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src * data: gap: https://ssl.gstatic.com ; 
-      style-src 'self' 'unsafe-inline'; 
-      script-src 'self' http://172.20.10.2:8000 'unsafe-inline' 'unsafe-eval';
-      media-src *; 
-      
-      img-src 'self' data: content:;"
-    />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="msapplication-tap-highlight" content="no" />
-    <meta
-      name="viewport"
-      content="initial-scale=1, user-scalable=no, maximum-scale=1, width=device-width, viewport-fit=cover"
-    />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redirect: Source Page - jQuery Mobile Demos</title>
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css" />
     <link rel="stylesheet" href="css/index.css" />
-    <script src="cordova.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
-    <script src="js/jquery.validate.js"></script>
-    <script src="js/hammer.js"></script>
-    <script src="js/index.js"></script>
-    <title>Quickpad</title>
+    <script id="redirectCode">
+      $(document).bind('pagebeforechange', function (e, data) {
+        if ($.type(data.toPage) !== 'string') {
+          // Search for redirect data that has been set on the data.toPage by the
+          // "pageload" handler below. If we find such data we know that we are
+          // supposed to perform a redirect.
+
+          var redirect = data.toPage.jqmData('redirect');
+          if (redirect) {
+            // The data has been found. Perform the appropriate redirect.
+
+            data.toPage = redirect;
+          }
+        }
+      });
+
+      function getResponseHeaders(jqXHR) {
+        jqXHR.responseHeaders = {};
+        var headers = jqXHR.getAllResponseHeaders();
+        headers = headers.split('\n');
+        headers.forEach(function (header) {
+          header = header.split(': ');
+          var key = header.shift();
+          if (key.length == 0) return;
+          // chrome60+ force lowercase, other browsers can be different
+          key = key.toLowerCase();
+          jqXHR.responseHeaders[key] = header.join(': ');
+        });
+      }
+
+      $(document).bind('pagecreate', function (e, triggerData) {
+        $(document).on('click', '#btnLogin', function (e) {
+          e.preventDefault();
+          let username = $('#username').val();
+          if (username === undefined || username.length < 3) {
+            return;
+          }
+          let loginUrl = 'http://localhost:3000/redirect?to=notes.html';
+
+          var posts = $.ajax({
+            type: 'GET',
+            url: loginUrl,
+          });
+          posts.done(function (data, textStatus, jqXHR) {
+            localStorage.setItem('username', username);
+            window.location.href =
+              'http://localhost:8000/' + jqXHR.getResponseHeader('X-Redirect');
+          });
+        });
+      });
+
+      $(document).bind('pageload', function (e, triggerData) {
+        // We can use this event to recognize that this is a redirect. In this
+        // example the server helpfully returns a custom header. However, if you
+        // don't have access to the server side, you can still examine
+        // triggerData.page, which contains the page that was loaded, but which has
+        // not yet been displayed or even recorded in the browser history. If there
+        // is a way to recognize that this is not the expected page, you can mark
+        // it with some jqmData that will be picked up in "pagebeforechange"
+        // (above) which in turn will give you an opportunity to redirect (by
+        // overwriting data.toPage as in the handler above)
+
+        var redirect = triggerData.xhr.getResponseHeader('X-Redirect');
+        if (redirect) {
+          // We have identified that this page is really a redirect. Mark it as
+          // such by setting some jqmData on it. The "pagebeforechange" handler
+          // above will look for this data, and, if present, will perform the
+          // appropriate redirect.
+
+          triggerData.page.jqmData('redirect', redirect);
+        }
+      });
+    </script>
   </head>
   <body>
-    <!-- Page 1 -->
-    <div data-role="page" id="mainPage">
-      <!--start header-->
-      <div data-role="header" data-position="fixed">
-        <h1>My Notes</h1>
-        <a
-          href="#popupMenu"
-          data-rel="popup"
-          data-transition="pop"
-          class="
-            ui-btn
-            ui-btn-icon-notext
-            ui-corner-all
-            ui-icon-edit
-            ui-nodisc-icon
-            ui-alt-icon
-            ui-btn-right
-          "
-          >Settings</a
+    <div data-role="page">
+      <div data-role="header" data-theme="f">
+        <h1>Redirect: Source Page</h1>
+        <a href="../" data-icon="home" data-iconpos="notext" data-ajax="false"
+          >Home</a
         >
-        <div data-role="popup" id="popupMenu" data-theme="a" class="ui-content">
-          <ul data-role="listview" style="min-width: 210px">
-            <li><a href="#" id="addLocalData">Add New</a></li>
-            <li><a href="#" id="uploadCloudData">Upload to Cloud</a></li>
-          </ul>
-        </div>
       </div>
-      <!--end header-->
-      <div data-role="main" class="ui-content">
-        <input type="text" id="searchNotes" placeholder="Search" />
-        <div id="notes-container">
-          <ul data-role="listview" class="ui-listview"></ul>
-        </div>
-      </div>
-      <!-- end page content-->
-      <!--start footer-->
-      <div
-        class=""
-        id=""
-        data-role="footer"
-        data-position="fixed"
-        data-tap-toggle="false"
-      >
-        <h4>Running cordova-browser &copy; 6.0.0</h4>
-      </div>
-      <!--end footer-->
-    </div>
-    <!-- End page one-->
-    <!-- Start page two-->
-    <div data-role="page" id="pg-display-new">
-      <!--start header-->
-      <div data-role="header" data-position="fixed" data-add-back-btn="true">
-        <h1>My Notes</h1>
-      </div>
-      <!--end header-->
-      <div data-role="main" class="ui-content">
-        <form action="#" id="note-form">
-          <textarea rows="10" id="editNote" required></textarea>
-          <button id="btnSave" class="ui-btn ui-shadow ui-corner-all">
-            Save
-          </button>
-        </form>
-        <div
-          data-role="popup"
-          id="errorMsg"
-          data-overlay-theme="a"
-          data-theme="a"
-          data-dismissible="false"
-          style="max-width: 400px"
-        >
-          <div data-role="header" data-theme="a">
-            <h3>Error Occured</h3>
-          </div>
-          <div role="main" class="ui-content">
-            <div class="ui-nodisc-icon">
-              <!-- Class added to the wrapper -->
-                  <a
-                href="#"
-                class="
-                  ui-btn
-                  ui-shadow
-                  ui-corner-all
-                  ui-icon-delete
-                  ui-btn-icon-notext
-                  ui-btn-b
-                  ui-btn-inline
-                "
-                >Delete</a
-              >
-              <p class="prompt">Note cannot be empty</p>
-            </div>
-            <a
-              href="#"
-              class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-              data-rel="back"
-              data-transition="flow"
-              id="upload"
-              >Ok</a
+      <!-- /header -->
+
+      <div data-role="content">
+        <div class="content-primary">
+          <div
+            data-demo-html="true"
+            data-demo-js="#redirectCode"
+            data-demo-php="source.php"
+          >
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="username"
+            />
+            <a id="btnLogin" href="#" data-role="button" data-inline="true"
+              >Login</a
             >
           </div>
+          <!--/demo-html -->
         </div>
+        <!--/content-primary -->
       </div>
-      <!--start footer-->
-      <div
-        class=""
-        id=""
-        data-role="footer"
-        data-position="fixed"
-        data-tap-toggle="false"
-      >
-        <h4>Running cordova-browser &copy; 6.0.0</h4>
+      <!-- /content -->
+
+      <div class="jqm-footer">
+        <p class="jqm-version"></p>
+        <p>&copy; 2010, 2013 jQuery Foundation and other contributors</p>
       </div>
-      <!--end footer-->
+      <!-- /jqm-footer -->
     </div>
-    <!-- end page two-->
+    <!-- /page -->
   </body>
 </html>

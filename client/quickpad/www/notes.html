@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src * data: gap: https://ssl.gstatic.com ; 
+      style-src 'self' 'unsafe-inline'; 
+      script-src 'self' http://192.168.1.106:8000 'unsafe-inline' 'unsafe-eval' *;
+      media-src *; 
+      
+      img-src 'self' data: content:;"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, user-scalable=no, maximum-scale=1, width=device-width, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <script src="cordova.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.mobile-1.4.5.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script src="js/hammer.js"></script>
+    <script src="js/index.js"></script>
+    <title>Quickpad</title>
+  </head>
+  <body>
+    <!-- Page 1 -->
+    <div data-role="page" id="mainPage">
+      <!--start header-->
+      <div data-role="header" data-position="fixed">
+        <h1>My Notes</h1>
+        <a
+          href="#popupMenu"
+          data-rel="popup"
+          data-transition="pop"
+          class="
+            ui-btn
+            ui-btn-icon-notext
+            ui-corner-all
+            ui-icon-edit
+            ui-nodisc-icon
+            ui-alt-icon
+            ui-btn-right
+          "
+          >Settings</a
+        >
+        <div data-role="popup" id="popupMenu" data-theme="a" class="ui-content">
+          <ul data-role="listview" style="min-width: 210px">
+            <li><a href="#" id="addLocalData">Add New</a></li>
+            <li><a href="#" id="uploadCloudData">Upload to Cloud</a></li>
+          </ul>
+        </div>
+      </div>
+      <!--end header-->
+      <div data-role="main" class="ui-content">
+        <input type="text" id="searchNotes" placeholder="Search" />
+        <div id="notes-container">
+          <ul data-role="listview" class="ui-listview"></ul>
+        </div>
+      </div>
+      <!-- end page content-->
+      <!--start footer-->
+      <div
+        class=""
+        id=""
+        data-role="footer"
+        data-position="fixed"
+        data-tap-toggle="false"
+      >
+        <h4>Running cordova-browser &copy; 6.0.0</h4>
+      </div>
+      <!--end footer-->
+    </div>
+    <!-- End page one-->
+    <!-- Start page two-->
+    <div data-role="page" id="pg-display-new">
+      <!--start header-->
+      <div data-role="header" data-position="fixed" data-add-back-btn="true">
+        <h1>My Notes</h1>
+      </div>
+      <!--end header-->
+      <div data-role="main" class="ui-content">
+        <form action="#" id="note-form">
+          <textarea rows="10" id="editNote" required></textarea>
+          <button id="btnSave" class="ui-btn ui-shadow ui-corner-all">
+            Save
+          </button>
+        </form>
+        <div
+          data-role="popup"
+          id="errorMsg"
+          data-overlay-theme="a"
+          data-theme="a"
+          data-dismissible="false"
+          style="max-width: 400px"
+        >
+          <div data-role="header" data-theme="a">
+            <h3>Error Occured</h3>
+          </div>
+          <div role="main" class="ui-content">
+            <div class="ui-nodisc-icon">
+              <!-- Class added to the wrapper -->
+                  <a
+                href="#"
+                class="
+                  ui-btn
+                  ui-shadow
+                  ui-corner-all
+                  ui-icon-delete
+                  ui-btn-icon-notext
+                  ui-btn-b
+                  ui-btn-inline
+                "
+                >Delete</a
+              >
+              <p class="prompt">Note cannot be empty</p>
+            </div>
+            <a
+              href="#"
+              class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
+              data-rel="back"
+              data-transition="flow"
+              id="upload"
+              >Ok</a
+            >
+          </div>
+        </div>
+      </div>
+      <!--start footer-->
+      <div
+        class=""
+        id=""
+        data-role="footer"
+        data-position="fixed"
+        data-tap-toggle="false"
+      >
+        <h4>Running cordova-browser &copy; 6.0.0</h4>
+      </div>
+      <!--end footer-->
+    </div>
+    <!-- end page two-->
+  </body>
+</html>

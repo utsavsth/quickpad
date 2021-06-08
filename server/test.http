@@ -1,0 +1,17 @@
+GET http://localhost:3000/getData HTTP/1.1
+content-type: application/json
+x-requested-username: utsav
+
+###
+
+GET http://localhost:3000/getData?search=tes HTTP/1.1
+content-type: application/json
+x-requested-username: utsav
+
+###
+
+GET http://localhost:3000/getData/60b58b21f82612c7c287ab88 HTTP/1.1
+content-type: application/json
+x-requested-username: utsav
+
+###

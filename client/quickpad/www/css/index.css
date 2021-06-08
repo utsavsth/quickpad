@@ -16,8 +16,19 @@ img {
   padding-top: 1em;
 }
 
-table {
+#notes-container ul li {
+  display: flex;
+}
+
+#notes-container ul li > table {
+  height: 4em;
   background-color: aliceblue;
+}
+
+.del-note,
+.edit-note {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 tr.col-id,
