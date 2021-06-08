@@ -49,12 +49,14 @@ app.get('/getData', cors(corsOptions), (req, res) => {
 });
 
 app.post('/saveDoc', cors(corsOptions), (req, res) => {
-  console.log(`request body: ${JSON.stringify(req.body)}`);
+  let data = JSON.parse(req.body.foo);
+
+  console.log(`request body: ${JSON.stringify(data)}`);
   currCollection
-    .insertOne(req.body)
+    .insertOne(data)
     .then((result) => {
       res.setHeader('content-type', 'application/json');
-      res.send(results);
+      res.send(result);
     })
     .catch((error) => {
       console.error(error);

@@ -94,6 +94,7 @@ let saveNote = async (notes) => {
     console.log(response);
     clearForm();
     alert('Data Stored!');
+    fetchNotes();
   });
 };
 
