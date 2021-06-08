@@ -65,9 +65,11 @@ app.get('/getData', (req, res) => {
       { author: user },
     ],
   };
+  const sort = { modifiedDt: -1 };
 
   currCollection
     .find(query)
+    .sort(sort)
     .toArray()
     .then((results) => {
       res.setHeader('content-type', 'application/json');
